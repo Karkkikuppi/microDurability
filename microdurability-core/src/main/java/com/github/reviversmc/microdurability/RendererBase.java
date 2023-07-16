@@ -10,7 +10,10 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 
-public abstract class RendererBase extends DrawableHelper implements HudRenderCallback {
+import static net.minecraft.client.gui.DrawableHelper.GUI_ICONS_TEXTURE;
+import static net.minecraft.client.gui.DrawableHelper.drawTexture;
+
+public abstract class RendererBase implements HudRenderCallback {
     private static final Identifier TEX = new Identifier("microdurability", "textures/gui/icons.png");
     private final MinecraftClient mc;
 
@@ -75,7 +78,7 @@ public abstract class RendererBase extends DrawableHelper implements HudRenderCa
 
     public void renderWarning(MatrixStack matrixStack, int x, int y) {
         RenderSystem.setShaderTexture(0, TEX);
-        drawTexture(matrixStack, x, y, 0, 0, 3, 11);
+        drawTexture(matrixStack, x, y, 0, 0, 0, 3, 11, 3, 11);
         RenderSystem.setShaderTexture(0, GUI_ICONS_TEXTURE);
     }
 
@@ -85,8 +88,8 @@ public abstract class RendererBase extends DrawableHelper implements HudRenderCa
         if (!stack.isDamageable()) return;
 
         RenderSystem.disableDepthTest();
-        RenderSystem.disableTexture();
         RenderSystem.disableBlend();
+
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferBuilder = tessellator.getBuffer();
         int width = stack.getItemBarStep();
@@ -110,7 +113,6 @@ public abstract class RendererBase extends DrawableHelper implements HudRenderCa
         }
         this.renderGuiQuad(bufferBuilder, x, y, width, 1, red, green, blue, alpha);
         RenderSystem.enableBlend();
-        RenderSystem.enableTexture();
         RenderSystem.enableDepthTest();
     }
 
